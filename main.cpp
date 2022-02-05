@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
+#include <QIcon>
 #include <QLocale>
 #include <QThread>
 #include <QTranslator>
@@ -46,6 +47,6 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
 
     engine.load(url);
-
+    app.setWindowIcon(QIcon::fromTheme("system-software-install"));
     return app.exec();
 }

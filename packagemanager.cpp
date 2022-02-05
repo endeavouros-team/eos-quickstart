@@ -40,7 +40,7 @@ bool PackageManager::installPackages()
     QProcess proc;
 
     proc.setProgram(terminal.binary);
-    proc.setArguments(QStringList() << terminal.args << "pkexec bash -c \"" + m_pacmanBinary + " -Syu " + packageList.join(" ") + " ; read -p '" + tr("Press enter to resume") + "...'\"");
+    proc.setArguments(QStringList() << terminal.args << "pkexec" << "bash" << "-c" << m_pacmanBinary + " -Syu " + packageList.join(" ") + " ; read -p '" + tr("Press enter to resume") + "...'");
 
     proc.start();
 

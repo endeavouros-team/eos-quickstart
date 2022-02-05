@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=EndeavourOS Quickstart Installer
+Comment=Get started by installing some common applications
+Exec=eosquickstart
+Terminal=false
+Type=Application
+Icon=system-software-install
+Categories=System;
+NoDisplay=false

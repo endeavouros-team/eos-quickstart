@@ -105,9 +105,7 @@ void PackageModel::refresh(const QStringList &installedPackageList)
 
     beginResetModel();
     for (int i = 0; i<m_model.size(); i++) {
-        if (installedPackageList.contains(m_model.at(i).packageName)) {
-            m_model[i].isInstalled = true;
-        }
+        m_model[i].isInstalled = installedPackageList.contains(m_model.at(i).packageName);
         m_model[i].isChecked = false;
     }
 

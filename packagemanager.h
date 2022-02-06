@@ -17,14 +17,32 @@ class PackageManager : public QObject
 public:
     explicit PackageManager(const QString &binaryPath, PackageModel *packageModel, Terminal terminal, QObject *parent = nullptr);
 
-    const QStringList installedPackages() const;
+    const QStringList installedPackages() const { return m_installedPackages; }
 
 public slots:
+    /*
+     * Installs all packages that are marked as "checked" in the package model
+     *
+     * Return true on success, false otherwise
+     */
     bool installPackages();
 
 private:
+    /*
+     * Finds all installed packages on the system and saves them in m_installedPackages
+     *
+     * Return true on success, false otherwise
+     */
     bool populateInstalledPackages();
 
+    /*
+     * Finds the best available terminal
+     *
+     * If m_preferredTerminal is valid, that will be returned.  If not,
+     * it iterates over the list of terminals in m_terminalList to find
+     * a valid terminal.  If none are available a default constructed
+     * Terminal is returned.
+     */
     Terminal getTerminal();
 
     QString m_pacmanBinary;

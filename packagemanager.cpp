@@ -11,11 +11,6 @@ PackageManager::PackageManager(const QString &binaryPath, PackageModel *packageM
     populateInstalledPackages();
 }
 
-const QStringList PackageManager::installedPackages() const
-{
-    return m_installedPackages;
-}
-
 bool PackageManager::installPackages()
 {
     Terminal terminal = getTerminal();

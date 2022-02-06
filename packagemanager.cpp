@@ -16,6 +16,7 @@ bool PackageManager::installPackages()
     Terminal terminal = getTerminal();
 
     if (terminal.binary.isEmpty()) {
+        qWarning() << tr("No supported terminal found, cannot install packages");
         return false;
     }
 
@@ -34,6 +35,7 @@ bool PackageManager::installPackages()
 
     proc.waitForFinished(1000 * 60);
 
+    // Update the list of installed packages and refresh the model and the view
     populateInstalledPackages();
     m_model->refresh(m_installedPackages);
 
@@ -87,7 +89,6 @@ Terminal PackageManager::getTerminal()
             return terminal;
         }
     }
-    qWarning() << tr("Preferred terminal not available and no terminal found on system");
     return Terminal();
 }
 

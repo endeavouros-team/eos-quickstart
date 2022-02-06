@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
     PackageModel model;
 
-    PackageManager packageManager(settings.value("packagemanager", "/usr/bin/pacman").toString(), &model, preferredTerminal);
+    PackageManager packageManager(settings.value("PackageManager", "/usr/bin/pacman").toString(), &model, preferredTerminal);
 
     const QStringList packageList = packageManager.installedPackages();
 

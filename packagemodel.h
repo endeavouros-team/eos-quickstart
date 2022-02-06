@@ -42,6 +42,8 @@ public:
 
     bool loadModel(QSettings &settings, const QStringList &installedPackageList);
 
+    void refresh(const QStringList &installedPackageList);
+
     QList<PackageData>* model() { return &m_model; }
 
 private:

@@ -75,6 +75,7 @@ bool PackageModel::loadModel(QSettings &settings, const QStringList &installedPa
         return false;
     }
 
+    beginResetModel();
     m_model.clear();
 
     // Iterate over the settings file and populate the model
@@ -94,5 +95,21 @@ bool PackageModel::loadModel(QSettings &settings, const QStringList &installedPa
         settings.endGroup();
     }
 
+    endResetModel();
+
     return true;
+}
+
+void PackageModel::refresh(const QStringList &installedPackageList)
+{
+
+    beginResetModel();
+    for (int i = 0; i<m_model.size(); i++) {
+        if (installedPackageList.contains(m_model.at(i).packageName)) {
+            m_model[i].isInstalled = true;
+        }
+        m_model[i].isChecked = false;
+    }
+
+    endResetModel();
 }

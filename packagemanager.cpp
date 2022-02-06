@@ -46,6 +46,9 @@ bool PackageManager::installPackages()
 
     proc.waitForFinished(1000 * 60);
 
+    populateInstalledPackages();
+    m_model->refresh(m_installedPackages);
+
     if( proc.exitCode() == 0) {
         return true;
     } else {

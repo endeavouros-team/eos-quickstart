@@ -1,8 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-//import Packages 1.0
-
 ApplicationWindow {
     width: 600
     height: 800

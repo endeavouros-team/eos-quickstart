@@ -7,7 +7,7 @@ ApplicationWindow {
     visible: true
     title: qsTr("EndeavourOS QuickStart Installer")
 
-    SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
+    SystemPalette { id: systemPalette; colorGroup: SystemPalette.Active }
 
     ListView {
         id: lvPackages
@@ -29,7 +29,7 @@ ApplicationWindow {
                 CheckDelegate {
                     id: check
                     width: parent.width
-                    text: "     " + model.name + " - " + model.description + (model.isInstalled ? " (Installed)" : "")
+                    text: "     " + model.name + " - " + model.description + (model.isInstalled ? " (" + qsTr("Installed") + ")" : "")
                     checkable: model.isInstalled ? false : true
                     checked: model.isChecked
 
@@ -54,14 +54,14 @@ ApplicationWindow {
         section.delegate: Rectangle {
             width: parent.width - sbListview.width
             implicitHeight: text.implicitHeight + 2
-            color: myPalette.window
+            color: systemPalette.window
             Text {
                 id: text
                 anchors.left: parent.left
                 font.bold: true
                 text: section
                 padding: 5
-                color: myPalette.windowText
+                color: systemPalette.windowText
             }
 
             MouseArea {
@@ -114,7 +114,11 @@ ApplicationWindow {
 
         onClicked: packageManager.installPackages()
 
-        text: "Install Now"
+        text: qsTr("Install Now")
+        palette {
+            button: systemPalette.button
+            buttonText: systemPalette.buttonText
+        }
     }
 
 }

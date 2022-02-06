@@ -44,7 +44,7 @@ public:
 
     void refresh(const QStringList &installedPackageList);
 
-    QList<PackageData>* model() { return &m_model; }
+    const QStringList getCheckedPackages();
 
 private:
     QList<PackageData> m_model;

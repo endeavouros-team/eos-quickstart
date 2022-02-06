@@ -24,14 +24,7 @@ bool PackageManager::installPackages()
         return false;
     }
 
-    QList<PackageData> *packages = m_model->model();
-
-    QStringList packageList;
-    for (const PackageData &package : *packages) {
-        if (package.isChecked) {
-            packageList.append(package.packageName);
-        }
-    }
+    const QStringList packageList = m_model->getCheckedPackages();
 
     if (packageList.isEmpty()) {
         return false;

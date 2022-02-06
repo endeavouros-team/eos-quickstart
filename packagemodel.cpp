@@ -113,3 +113,14 @@ void PackageModel::refresh(const QStringList &installedPackageList)
 
     endResetModel();
 }
+
+const QStringList PackageModel::getCheckedPackages()
+{
+    QStringList packageList;
+    for (const PackageData &package : m_model) {
+        if (package.isChecked) {
+            packageList.append(package.packageName);
+        }
+    }
+    return packageList;
+}

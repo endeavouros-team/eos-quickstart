@@ -63,11 +63,51 @@ ApplicationWindow {
                 padding: 5
                 color: systemPalette.windowText
             }
+            Canvas {
+                id: indicator
+                x: parent.width-width-5
+                y: (parent.height-height)/2
+                width: 12
+                height: 8
 
+                onPaint: {
+                    var context = getContext( "2d" );
+                    paintTriangle( context, lvPackages.isSectionExpanded( section ) )
+                }
+                function paintTriangle( context, expanded ) {
+                    if ( expanded ) {
+                        context.reset();
+                        context.moveTo(width/2, 0);
+                        context.lineTo(width, height);
+                        context.lineTo(0, height);
+                        context.closePath();
+                        context.fillStyle = systemPalette.windowText;
+                        context.fill();
+                    } else {
+                        context.reset();
+                        context.moveTo(0, 0);
+                        context.lineTo(width, 0);
+                        context.lineTo(width/2, height);
+                        context.closePath();
+                        context.fillStyle = systemPalette.windowText;
+                        context.fill();
+                    }
+                }
+
+            }
             MouseArea {
                 anchors.fill: parent
-                onClicked: lvPackages.toggleSection( section );
+                onClicked: toggleSection( section )
 
+            }
+
+            function toggleSection( section ) {
+                if ( lvPackages.isSectionExpanded( section ) ) {
+                    lvPackages.hideSection( section )
+                } else {
+                    lvPackages.showSection( section )
+                }
+                indicator.requestPaint()
             }
 
         }
@@ -86,13 +126,6 @@ ApplicationWindow {
             expandMapChanged();
         }
 
-        function toggleSection( section ) {
-            if ( isSectionExpanded( section ) ) {
-                hideSection( section )
-            } else {
-                showSection( section )
-            }
-        }
 
         // We need to make sure our selections don't become unchecked as we scroll
         cacheBuffer: 50000

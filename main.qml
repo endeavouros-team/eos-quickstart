@@ -17,7 +17,7 @@ ApplicationWindow {
         model: packageModel
         delegate: Item {
             property bool expanded: lvPackages.isSectionExpanded( model.category )
-            width: parent.width - sbListview.width
+            width: lvPackages.width - sbListview.width
             implicitHeight: expanded ? check.implicitHeight : 0
 
             Row {

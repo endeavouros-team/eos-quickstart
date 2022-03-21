@@ -33,7 +33,7 @@ bool PackageManager::installPackages()
 
     proc.start();
 
-    proc.waitForFinished(1000 * 60);
+    proc.waitForFinished(-1);
 
     // Update the list of installed packages and refresh the model and the view
     populateInstalledPackages();

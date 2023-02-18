@@ -69,7 +69,7 @@ QHash<int, QByteArray> PackageModel::roleNames() const
     };
 }
 
-bool PackageModel::loadModel(QSettings &settings, const QStringList &installedPackageList)
+bool PackageModel::loadModel(const QSettings& settings, const QStringList& installedPackageList)
 {
     if(settings.allKeys().isEmpty()) {
         return false;
@@ -79,46 +79,4 @@ bool PackageModel::loadModel(QSettings &settings, const QStringList &installedPa
     m_model.clear();
 
     // Iterate over the settings file and populate the model
-    const QStringList groups = settings.childGroups();
-    for (const QString &group : groups) {
-        settings.beginGroup(group);
-        const QStringList keys = settings.allKeys();
-        for (const QString &key : keys) {
-            PackageData packageData;
-            packageData.packageName = key;
-            packageData.packageDesc = settings.value(key).toString();
-            packageData.category = group;
-            packageData.isInstalled = installedPackageList.contains(key);
-            packageData.isChecked = false;
-            m_model.append(packageData);
-        }
-        settings.endGroup();
-    }
-
-    endResetModel();
-
-    return true;
-}
-
-void PackageModel::refresh(const QStringList &installedPackageList)
-{
-
-    beginResetModel();
-    for (int i = 0; i<m_model.size(); i++) {
-        m_model[i].isInstalled = installedPackageList.contains(m_model.at(i).packageName);
-        m_model[i].isChecked = false;
-    }
-
-    endResetModel();
-}
-
-const QStringList PackageModel::getCheckedPackages()
-{
-    QStringList packageList;
-    for (const PackageData &package : m_model) {
-        if (package.isChecked) {
-            packageList.append(package.packageName);
-        }
-    }
-    return packageList;
-}
+    const QStringList groups = settings.child

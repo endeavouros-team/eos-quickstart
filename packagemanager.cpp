@@ -1,13 +1,11 @@
 #include "packagemanager.h"
 
 #include <QFile>
+#include <QProcessBuilder>
 
 PackageManager::PackageManager(const QString &binaryPath, PackageModel *packageModel, Terminal terminal, QObject *parent)
-    : QObject{parent}
+    : QObject{parent}, m_pacmanBinary{binaryPath}, m_model{packageModel}, m_preferredTerminal{terminal}
 {
-    m_preferredTerminal = terminal;
-    m_pacmanBinary = binaryPath;
-    m_model = packageModel;
     populateInstalledPackages();
 }
 
@@ -16,7 +14,7 @@ bool PackageManager::installPackages()
     Terminal terminal = getTerminal();
 
     if (terminal.binary.isEmpty()) {
-        qWarning() << tr("No supported terminal found, cannot install packages");
+        qWarning() << QStringLiteral("No supported terminal found, cannot install packages");
         return false;
     }
 
@@ -26,46 +24,40 @@ bool PackageManager::installPackages()
         return false;
     }
 
-    QProcess proc;
+    QProcessBuilder builder;
+    builder.setProgram(terminal.binary);
+    builder.setArguments({terminal.args, "pkexec", "bash", "-c", m_pacmanBinary + " -Syu " + packageList.join(" ") + " ; read -p '" + tr("Press enter to resume") + "...'"});
+    builder.start();
 
-    proc.setProgram(terminal.binary);
-    proc.setArguments(QStringList() << terminal.args << "pkexec" << "bash" << "-c" << m_pacmanBinary + " -Syu " + packageList.join(" ") + " ; read -p '" + tr("Press enter to resume") + "...'");
-
-    proc.start();
-
-    proc.waitForFinished(-1);
+    builder.waitForFinished();
 
     // Update the list of installed packages and refresh the model and the view
     populateInstalledPackages();
     m_model->refresh(m_installedPackages);
 
-    if( proc.exitCode() == 0) {
-        return true;
-    } else {
-        return false;
-    }
+    return builder.exitCode() == 0;
 }
 
 bool PackageManager::populateInstalledPackages()
 {
     if (m_pacmanBinary.isEmpty()) {
-        qWarning() << tr("ERROR: Package Manager not set");
+        qWarning() << QStringLiteral("ERROR: Package Manager not set");
         return false;
     }
 
     m_installedPackages.clear();
 
-    QProcess proc;
-    proc.setProgram(m_pacmanBinary);
-    proc.setArguments({"-Qq"});
-    proc.start();
+    QProcessBuilder builder;
+    builder.setProgram(m_pacmanBinary);
+    builder.setArguments({"-Qq"});
+    builder.start();
 
-    if (!proc.waitForFinished()) {
-        qWarning() << tr("Failed to start process ") << proc.program() << proc.arguments();
+    if (!builder.waitForFinished()) {
+        qWarning() << QStringLiteral("Failed to start process ") << builder.program() << builder.arguments();
         return false;
     }
 
-    QString output = proc.readAllStandardOutput();
+    const QString output = builder.readAllStandardOutput();
     const QStringList lines = output.split('\n');
 
     for (const QString &line : lines) {
@@ -89,7 +81,6 @@ Terminal PackageManager::getTerminal()
             return terminal;
         }
     }
+
     return Terminal();
 }
-
-

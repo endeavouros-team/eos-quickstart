@@ -11,6 +11,7 @@ struct PackageData {
     bool isInstalled;
     bool isChecked;
 };
+Q_DECLARE_METATYPE(PackageData)
 
 class PackageModel : public QAbstractListModel
 {
@@ -36,7 +37,7 @@ public:
 
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
-    virtual QHash<int, QByteArray> roleNames() const override;
+    QHash<int, QByteArray> roleNames() const;
 
     /*
      * Populates the model from @p settings.  Each group except general is treated
@@ -57,7 +58,7 @@ public:
     /*
      * Returns a QStringList of package names for package which is checked
      */
-    const QStringList getCheckedPackages();
+    const QStringList getCheckedPackages() const;
 
 private:
     QList<PackageData> m_model;

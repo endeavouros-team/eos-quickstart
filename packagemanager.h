@@ -11,13 +11,12 @@ struct Terminal {
     QString args;
 };
 
-class PackageManager : public QObject
-{
+class PackageManager : public QObject {
     Q_OBJECT
 public:
-    explicit PackageManager(const QString &binaryPath, PackageModel *packageModel, Terminal terminal, QObject *parent = nullptr);
+    explicit PackageManager(const QString &binaryPath, PackageModel *packageModel, const Terminal &terminal, QObject *parent = nullptr);
 
-    const QStringList installedPackages() const { return m_installedPackages; }
+    const QStringList& installedPackages() const { return m_installedPackages; }
 
 public slots:
     /*
@@ -43,14 +42,14 @@ private:
      * a valid terminal.  If none are available a default constructed
      * Terminal is returned.
      */
-    Terminal getTerminal();
+    Terminal getTerminal() const;
 
-    QString m_pacmanBinary;
-    Terminal m_preferredTerminal;
+    const QString m_pacmanBinary;
+    const Terminal m_preferredTerminal;
     QStringList m_installedPackages;
     PackageModel *m_model;
 
-    const QVector<Terminal> m_terminalList = {
+    const auto m_terminalList = QVector<Terminal>{
         {"/usr/bin/konsole", "-e"},
         {"/usr/bin/gnome-terminal", "--"},
         {"/usr/bin/xfce4-terminal", "-x"},

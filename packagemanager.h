@@ -54,6 +54,8 @@ private:
         {"/usr/bin/konsole", "-e"},
         {"/usr/bin/gnome-terminal", "--"},
         {"/usr/bin/xfce4-terminal", "-x"},
+        {"/usr/bin/qterminal", "-e"},
+        {"/usr/bin/mate-terminal", "-x"},
         {"/usr/bin/lxterminal", "-e"},
         {"/usr/bin/xterm", "-e"},
         {"/usr/bin/alacritty", "-e"}
